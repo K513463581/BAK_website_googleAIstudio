@@ -1,4 +1,5 @@
 import React from 'react';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const About: React.FC = () => {
   return (
@@ -9,6 +10,8 @@ const About: React.FC = () => {
           <p className="text-xl text-slate-300">A legacy of trust, competence, and service.</p>
         </div>
       </div>
+      
+      <Breadcrumbs />
 
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="prose prose-lg text-gray-600 mx-auto">

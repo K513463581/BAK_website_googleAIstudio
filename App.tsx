@@ -9,6 +9,7 @@ import Resources from './pages/Resources';
 import News from './pages/News';
 import Auth from './pages/Auth';
 import Profile from './pages/Profile';
+import ThemeExportPage from './pages/ThemeExportPage';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -62,6 +63,8 @@ const App: React.FC = () => {
               path="/profile" 
               element={user ? <Profile user={user} /> : <Navigate to="/auth" />} 
             />
+
+            <Route path="/theme-export" element={<ThemeExportPage />} />
           </Routes>
         </main>
         

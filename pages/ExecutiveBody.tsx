@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, Phone } from 'lucide-react';
 import { ExecutiveMember } from '../types';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const members: ExecutiveMember[] = [
   { id: '1', name: 'Sri. Rajesh Kumar', position: 'President', image: 'https://picsum.photos/seed/pres/300/300', email: 'president@bak.com' },
@@ -13,15 +14,15 @@ const members: ExecutiveMember[] = [
 
 const ExecutiveBody: React.FC = () => {
   return (
-    <div className="bg-slate-50 min-h-screen py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-4">Executive Body</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Meet the elected representatives leading the Bar Association of Karimnagar for the current term.
-          </p>
-        </div>
+    <div className="bg-slate-50 min-h-screen">
+       <div className="bg-navy-900 py-12 text-center text-white">
+        <h1 className="text-3xl md:text-4xl font-serif font-bold">Executive Body</h1>
+        <p className="text-slate-300 mt-2">Leadership Team (2023-2024)</p>
+      </div>
+      
+      <Breadcrumbs />
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* President Highlight */}
         <div className="flex justify-center mb-16">
           <div className="bg-white p-6 rounded-xl shadow-xl max-w-sm text-center border-t-4 border-gold-500">
@@ -38,10 +39,10 @@ const ExecutiveBody: React.FC = () => {
         {/* Rest of the Body */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {members.slice(1).map((member) => (
-            <div key={member.id} className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div key={member.id} className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-b-2 border-transparent hover:border-gold-500">
               <div className="relative mb-6">
                 <img src={member.image} alt={member.name} className="w-32 h-32 rounded-full mx-auto object-cover" />
-                <div className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-1/2 bg-navy-900 text-white text-xs px-3 py-1 rounded-full">
+                <div className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-1/2 bg-navy-900 text-white text-xs px-3 py-1 rounded-full uppercase font-bold tracking-wider">
                   Elected
                 </div>
               </div>
