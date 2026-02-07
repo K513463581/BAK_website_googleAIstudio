@@ -1,32 +1,145 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Gavel, Scale, BookOpen, Users, ArrowRight, Calendar, Award } from 'lucide-react';
+import { Gavel, Scale, BookOpen, Users, ArrowRight, Calendar, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Home: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      label: "ESTABLISHED 1950",
+      title: "Upholding Justice, Defending Rights",
+      desc: "The official digital portal of the Bar Association of Karimnagar. Serving the legal community with integrity and excellence.",
+      btnText: "Learn More",
+      link: "/about",
+      color: "text-gold-500"
+    },
+    {
+      label: "LATEST NEWS",
+      title: "General Body Meeting Notice",
+      desc: "Important gathering regarding the new court complex allocation. All members are requested to attend this mandatory session.",
+      btnText: "Read News",
+      link: "/news",
+      color: "text-blue-400"
+    },
+    {
+      label: "UPCOMING EVENTS",
+      title: "Annual Legal Workshop 2024",
+      desc: "Join us for a seminar on Digital Forensics in Criminal Law featuring High Court Justices. Registration is now open.",
+      btnText: "View Event Details",
+      link: "/news",
+      color: "text-green-400"
+    },
+    {
+      label: "LEGAL LIBRARY",
+      title: "Access Digital Judgments",
+      desc: "Our new comprehensive library offers instant access to Supreme Court and High Court judgments for all registered members.",
+      btnText: "Browse Library",
+      link: "/resources/library",
+      color: "text-purple-400"
+    },
+    {
+      label: "MEMBERSHIP",
+      title: "Join Our Community",
+      desc: "Become a part of a legacy that has stood for over 70 years. Apply for membership to access exclusive benefits.",
+      btnText: "Register Now",
+      link: "/auth",
+      color: "text-gold-500"
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  // Placeholder for the Lady Justice statue user uploaded
+  const LADY_JUSTICE_IMG = "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1000&auto=format&fit=crop";
+
   return (
     <div className="animate-fade-in">
       
-      {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center bg-navy-900 overflow-hidden">
+      {/* Hero Section with Carousel and Image */}
+      <section className="relative bg-navy-900 overflow-hidden">
         {/* Abstract Background Overlay */}
-        <div className="absolute inset-0 z-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')] bg-cover bg-center"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/80 to-transparent z-10"></div>
+        <div className="absolute inset-0 z-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         
-        <div className="relative z-20 text-center px-4 max-w-4xl mx-auto">
-          <span className="inline-block py-1 px-3 rounded-full bg-gold-500/20 border border-gold-500 text-gold-500 text-sm font-semibold tracking-wider mb-6">ESTABLISHED 1950</span>
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
-            Upholding Justice,<br/> <span className="text-gold-500">Defending Rights</span>
-          </h1>
-          <p className="text-slate-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
-            The official digital portal of the Bar Association of Karimnagar. Serving the legal community with integrity and excellence.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/auth" className="px-8 py-3 bg-gold-600 hover:bg-gold-500 text-white rounded-md font-semibold transition-all transform hover:scale-105 shadow-lg">
-              Member Login
-            </Link>
-            <Link to="/about" className="px-8 py-3 bg-transparent border border-white text-white hover:bg-white/10 rounded-md font-semibold transition-all">
-              Learn More
-            </Link>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col-reverse md:flex-row items-center min-h-[600px] py-12 md:py-0">
+            
+            {/* Left Side: Text Carousel (70%) */}
+            <div className="w-full md:w-[70%] z-10 pr-0 md:pr-12 pt-8 md:pt-0">
+               <div className="relative min-h-[300px] flex flex-col justify-center">
+                  
+                  {/* Slide Content */}
+                  {slides.map((slide, index) => (
+                    <div 
+                      key={index}
+                      className={`transition-all duration-700 absolute inset-0 flex flex-col justify-center ${
+                        index === currentSlide 
+                          ? 'opacity-100 translate-x-0 relative' 
+                          : 'opacity-0 -translate-x-8 absolute pointer-events-none'
+                      }`}
+                    >
+                      <span className={`inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 ${slide.color} text-sm font-semibold tracking-wider mb-6 w-fit`}>
+                        {slide.label}
+                      </span>
+                      <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
+                        {slide.title}
+                      </h1>
+                      <p className="text-slate-300 text-lg md:text-xl mb-8 max-w-lg font-light leading-relaxed">
+                        {slide.desc}
+                      </p>
+                      <div>
+                        <Link 
+                          to={slide.link} 
+                          className="inline-flex items-center px-8 py-3 bg-gold-600 hover:bg-gold-500 text-white rounded-md font-semibold transition-all transform hover:scale-105 shadow-lg"
+                        >
+                          {slide.btnText} <ArrowRight size={18} className="ml-2"/>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+               </div>
+
+               {/* Carousel Controls */}
+               <div className="flex space-x-4 mt-8 md:mt-12">
+                  <button onClick={prevSlide} className="p-2 rounded-full border border-white/20 text-white hover:bg-white/10 transition">
+                    <ChevronLeft size={24} />
+                  </button>
+                  <div className="flex space-x-2 items-center">
+                    {slides.map((_, idx) => (
+                      <button 
+                        key={idx} 
+                        onClick={() => setCurrentSlide(idx)}
+                        className={`h-2 rounded-full transition-all duration-300 ${idx === currentSlide ? 'w-8 bg-gold-500' : 'w-2 bg-white/30 hover:bg-white/50'}`}
+                      />
+                    ))}
+                  </div>
+                  <button onClick={nextSlide} className="p-2 rounded-full border border-white/20 text-white hover:bg-white/10 transition">
+                    <ChevronRight size={24} />
+                  </button>
+               </div>
+            </div>
+
+            {/* Right Side: Statue Image (30%) */}
+            <div className="w-full md:w-[30%] z-10 flex justify-center md:justify-end relative h-[400px] md:h-[600px]">
+               {/* Glowing effect behind the statue */}
+               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-gold-500/20 blur-[80px] rounded-full"></div>
+               
+               <img 
+                 src={LADY_JUSTICE_IMG}
+                 alt="Lady Justice Statue" 
+                 className="h-full w-auto object-contain drop-shadow-2xl relative z-10 mask-image-gradient"
+                 style={{ filter: 'brightness(1.1) contrast(1.1)' }}
+               />
+            </div>
+
           </div>
         </div>
       </section>
@@ -34,7 +147,7 @@ const Home: React.FC = () => {
       {/* Info Cards / Features */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 -mt-32 relative z-30">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30">
             {/* Card 1 */}
             <div className="bg-white p-8 rounded-lg shadow-xl border-t-4 border-gold-500 hover:shadow-2xl transition-shadow">
               <div className="w-14 h-14 bg-navy-50 rounded-full flex items-center justify-center text-navy-900 mb-6">
@@ -69,7 +182,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Stats / Infographics Stripe */}
-      <section className="py-16 bg-navy-900 text-white">
+      <section className="py-16 bg-navy-900 text-white border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/10">
             <div className="p-4">
