@@ -34,9 +34,8 @@ export const authService = {
     });
   },
 
-  resetPassword: async (email: string): Promise<boolean> => {
-    // Logging email to satisfy unused variable check in mock
-    console.log(`Sending reset password link to: ${email}`);
+  resetPassword: async (_email: string): Promise<boolean> => {
+    // Prefix parameter with underscore to indicate it is intentionally unused in this mock
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(true);
