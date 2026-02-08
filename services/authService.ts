@@ -35,6 +35,8 @@ export const authService = {
   },
 
   resetPassword: async (email: string): Promise<boolean> => {
+    // Logging email to satisfy unused variable check in mock
+    console.log(`Sending reset password link to: ${email}`);
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(true);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Settings, Bell, FileText, Calendar } from 'lucide-react';
+import { Settings, Bell, FileText, Calendar } from 'lucide-react';
 import { User as UserType } from '../types';
 
 interface ProfileProps {
