@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate, User } from './types';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { User } from './types';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';

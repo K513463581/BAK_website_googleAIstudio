@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from '../types';
+import { Link } from 'react-router-dom';
 import { Gavel, Scale, BookOpen, Users, ArrowRight, Calendar, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Home: React.FC = () => {
