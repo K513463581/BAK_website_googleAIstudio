@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from '../types';
 import { FileText, Download, Search, Book, ExternalLink } from 'lucide-react';
 
 const Resources: React.FC = () => {

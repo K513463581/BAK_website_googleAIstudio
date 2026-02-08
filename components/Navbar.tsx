@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from '../types';
 import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
 
 interface NavbarProps {
