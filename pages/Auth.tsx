@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { User, Lock, Mail, CreditCard, Scale } from 'lucide-react';
+import { User, Lock, Mail, CreditCard, Scale, AlertCircle } from 'lucide-react';
 
 interface AuthProps {
   onLogin: (user: any) => void;
@@ -11,22 +11,30 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const [view, setView] = useState<'login' | 'register' | 'forgot'>('login');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const navigate = useNavigate();
 
   // Login State
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
 
+  // Register State
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regBarId, setRegBarId] = useState('');
+  const [regPass, setRegPass] = useState('');
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setSuccessMsg('');
     try {
       const user = await authService.login(loginEmail, loginPass);
       onLogin(user);
       navigate('/profile');
-    } catch (err) {
-      setError('Invalid email or password');
+    } catch (err: any) {
+      setError(err.message || 'Invalid email or password. Please check your database connection.');
     } finally {
       setIsLoading(false);
     }
@@ -35,20 +43,31 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate reg
-    setTimeout(() => {
-        setIsLoading(false);
-        alert("Registration Request Sent to Bar Council for Approval.");
+    setError('');
+    setSuccessMsg('');
+    
+    try {
+        const user = await authService.register({
+            name: regName,
+            email: regEmail,
+            barId: regBarId,
+            password: regPass
+        });
+        setSuccessMsg("Registration successful! You can now log in.");
         setView('login');
-    }, 1500);
+    } catch (err: any) {
+        setError(err.message || "Registration failed. Please try again.");
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   const handleForgot = async (e: React.FormEvent) => {
      e.preventDefault();
      setIsLoading(true);
-     await authService.resetPassword("test@test.com");
+     await authService.resetPassword("test@test.com"); // Using mock/api logic
      setIsLoading(false);
-     alert("Password reset link sent to your email.");
+     alert("If your account exists, a reset link has been sent.");
      setView('login');
   };
 
@@ -70,8 +89,14 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
         </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded text-sm text-center border border-red-200">
-            {error}
+          <div className="bg-red-50 text-red-600 p-3 rounded text-sm text-center border border-red-200 flex items-center justify-center">
+            <AlertCircle size={16} className="mr-2" /> {error}
+          </div>
+        )}
+
+        {successMsg && (
+          <div className="bg-green-50 text-green-600 p-3 rounded text-sm text-center border border-green-200">
+            {successMsg}
           </div>
         )}
 
@@ -134,19 +159,47 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
            <form className="mt-8 space-y-4" onSubmit={handleRegister}>
              <div className="relative">
                 <User className="absolute top-3 left-3 text-gray-400" size={20} />
-                <input type="text" required className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" placeholder="Full Name" />
+                <input 
+                    type="text" 
+                    required 
+                    className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" 
+                    placeholder="Full Name" 
+                    value={regName}
+                    onChange={(e) => setRegName(e.target.value)}
+                />
              </div>
              <div className="relative">
                 <Mail className="absolute top-3 left-3 text-gray-400" size={20} />
-                <input type="email" required className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" placeholder="Email Address" />
+                <input 
+                    type="email" 
+                    required 
+                    className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" 
+                    placeholder="Email Address"
+                    value={regEmail}
+                    onChange={(e) => setRegEmail(e.target.value)}
+                />
              </div>
              <div className="relative">
                 <CreditCard className="absolute top-3 left-3 text-gray-400" size={20} />
-                <input type="text" required className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" placeholder="Bar Registration Number" />
+                <input 
+                    type="text" 
+                    required 
+                    className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" 
+                    placeholder="Bar Registration Number" 
+                    value={regBarId}
+                    onChange={(e) => setRegBarId(e.target.value)}
+                />
              </div>
              <div className="relative">
                 <Lock className="absolute top-3 left-3 text-gray-400" size={20} />
-                <input type="password" required className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" placeholder="Create Password" />
+                <input 
+                    type="password" 
+                    required 
+                    className="pl-10 w-full py-3 border border-gray-300 rounded focus:ring-navy-900 focus:border-navy-900" 
+                    placeholder="Create Password" 
+                    value={regPass}
+                    onChange={(e) => setRegPass(e.target.value)}
+                />
              </div>
              
              <button type="submit" disabled={isLoading} className="w-full py-3 bg-gold-600 hover:bg-gold-500 text-white rounded font-medium transition">
